@@ -1,7 +1,6 @@
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -10,11 +9,9 @@ import pageObject.LoginPage;
 import pageObject.MainPage;
 import pageObject.RegisterPage;
 import pageObject.ResetPasswordPage;
-
 import java.time.Duration;
 import java.util.Map;
 import java.util.Random;
-
 import static org.junit.Assert.*;
 
 public class LoginTest extends BaseTest{
@@ -22,9 +19,6 @@ public class LoginTest extends BaseTest{
     String userName = "user" + new Random().nextInt(10000);
     String email = "random" + new Random().nextInt(10000) + "@mail.com";
     String password = "password" + new Random().nextInt(10000);
-
-
-
 
     @Test
     @DisplayName("Вход по кнопке «Войти в аккаунт» на главной странице")
@@ -45,25 +39,21 @@ public class LoginTest extends BaseTest{
         loginPage.clickSignUpButton();
         wait.until(ExpectedConditions.visibilityOfElementLocated(registerPage.getSignUpForm()));
         registerPage.signUp(userName, email, password);
+        wait.until(ExpectedConditions.urlToBe(LOGIN_PAGE_URL));
 
-
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getLoginButton()));
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getEmailField()));
         loginPage.loginAccount(email, password);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getPersonalAccountButton()));
-        WebElement personalAccountButton = driver.findElement(mainPage.getPersonalAccountButton());
-        assertTrue(personalAccountButton.isDisplayed());
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getMakeOrderButton()));
+        WebElement element = driver.findElement(mainPage.getMakeOrderButton());
+        assertTrue(element.isDisplayed());
 
         Response loginResponse = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(Map.of("email", email, "password", password))
-                .post("https://stellarburgers.nomoreparties.site/api/auth/login");
+                .post(LOGIN_URL);
 
         bearerToken = loginResponse.jsonPath().getString("accessToken");
-
     }
 
     @Test
@@ -85,28 +75,25 @@ public class LoginTest extends BaseTest{
         loginPage.clickSignUpButton();
         wait.until(ExpectedConditions.visibilityOfElementLocated(registerPage.getSignUpForm()));
         registerPage.signUp(userName, email, password);
+        wait.until(ExpectedConditions.urlToBe(LOGIN_PAGE_URL));
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getLoginButton()));
-
         mainPage.clickPersonalAccountButton();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getLoginButton()));
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getEmailField()));
         loginPage.loginAccount(email, password);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getPersonalAccountButton()));
-        WebElement personalAccountButton = driver.findElement(mainPage.getPersonalAccountButton());
-        assertTrue(personalAccountButton.isDisplayed());
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getMakeOrderButton()));
+        WebElement element = driver.findElement(mainPage.getMakeOrderButton());
+        assertTrue(element.isDisplayed());
 
         Response loginResponse = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(Map.of("email", email, "password", password))
-                .post("https://stellarburgers.nomoreparties.site/api/auth/login");
+                .post(LOGIN_URL);
 
         bearerToken = loginResponse.jsonPath().getString("accessToken");
     }
-
 
     @Test
     @DisplayName("Вход через кнопку в форме регистрации")
@@ -126,28 +113,24 @@ public class LoginTest extends BaseTest{
         loginPage.clickSignUpButton();
         wait.until(ExpectedConditions.visibilityOfElementLocated(registerPage.getNameField()));
         registerPage.signUp(userName, email, password);
+        wait.until(ExpectedConditions.urlToBe(LOGIN_PAGE_URL));
 
-        //Нажать кнопку Зарегистироватья в форме авторизации
         wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getSignUpButton()));
         loginPage.clickSignUpButton();
-
-        //нажать кнопку Войти в форме регистрации
         wait.until(ExpectedConditions.visibilityOfElementLocated(registerPage.getLoginButton()));
         registerPage.clickLoginButton();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getLoginButton()));
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getEmailField()));
         loginPage.loginAccount(email, password);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getPersonalAccountButton()));
-        WebElement personalAccountButton = driver.findElement(mainPage.getPersonalAccountButton());
-        assertTrue(personalAccountButton.isDisplayed());
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getMakeOrderButton()));
+        WebElement element = driver.findElement(mainPage.getMakeOrderButton());
+        assertTrue(element.isDisplayed());
 
         Response loginResponse = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(Map.of("email", email, "password", password))
-                .post("https://stellarburgers.nomoreparties.site/api/auth/login");
+                .post(LOGIN_URL);
 
         bearerToken = loginResponse.jsonPath().getString("accessToken");
 
@@ -172,6 +155,7 @@ public class LoginTest extends BaseTest{
         loginPage.clickSignUpButton();
         wait.until(ExpectedConditions.visibilityOfElementLocated(registerPage.getNameField()));
         registerPage.signUp(userName, email, password);
+        wait.until(ExpectedConditions.urlToBe(LOGIN_PAGE_URL));
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getSignUpButton()));
         loginPage.clickResetPasswordButton();
@@ -179,19 +163,17 @@ public class LoginTest extends BaseTest{
         wait.until(ExpectedConditions.visibilityOfElementLocated(resetPasswordPage.getEmailField()));
         resetPasswordPage.clickLoginButton();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getLoginButton()));
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getEmailField()));
         loginPage.loginAccount(email, password);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getPersonalAccountButton()));
-        WebElement personalAccountButton = driver.findElement(mainPage.getPersonalAccountButton());
-        assertTrue(personalAccountButton.isDisplayed());
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getMakeOrderButton()));
+        WebElement element = driver.findElement(mainPage.getMakeOrderButton());
+        assertTrue(element.isDisplayed());
 
         Response loginResponse = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(Map.of("email", email, "password", password))
-                .post("https://stellarburgers.nomoreparties.site/api/auth/login");
+                .post(LOGIN_URL);
 
         bearerToken = loginResponse.jsonPath().getString("accessToken");
     }

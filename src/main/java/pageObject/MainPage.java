@@ -1,26 +1,26 @@
 package pageObject;
-import com.sun.tools.javac.Main;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-
-//////////////////////////////////ГЛАВНАЯ СТРАНИЦА//////////////////////////////////////////
 
 public class MainPage {
 
     private WebDriver driver;
 
-    //вход по кнопке «Войти в аккаунт» на главной
     private By loginAccountButton = By.xpath("//button[text()='Войти в аккаунт']");
-    //вход через кнопку «Личный кабинет»
     private By personalAccountButton = By.xpath("//p[contains(text(), 'Личный Кабинет')]");
-    private By bunSectionButton = By.xpath("//span[contains(text(), 'Булки')]");
-    private By sauceSectionButton = By.xpath("//span[contains(text(), 'Соусы')]");
-    private By fillingSectionButton = By.xpath("//span[contains(text(), 'Начинки')]");
-
+    private By bunSectionButton = By.xpath("(//div[contains(@class, 'tab_tab__1SPyG')])[1]");
+    private By sauceSectionButton = By.xpath("(//div[contains(@class, 'tab_tab__1SPyG')])[2]");
+    private By fillingSectionButton = By.xpath("(//div[contains(@class, 'tab_tab__1SPyG')])[3]");
+    private By bunSectionSelected = By.xpath("//section[@class='BurgerIngredients_ingredients__1N8v2']//div[1][contains(@class, 'tab_tab_type_current__2BEPc')]");
+    private By sauceSectionSelected = By.xpath("//section[@class='BurgerIngredients_ingredients__1N8v2']//div[2][contains(@class, 'tab_tab_type_current__2BEPc')]");
+    private By fillingSectionSelected = By.xpath("//section[@class='BurgerIngredients_ingredients__1N8v2']//div//div[3][contains(@class, 'tab_tab_type_current__2BEPc')]");
+    //кнопка Конструктор
+    private By constructorButton = By.xpath("//p[contains(text(), 'Конструктор')]");
+    //логотип Stellar Burgers
+    private By logoButton = By.className("AppHeader_header__logo__2D0X2");
+    //Кнопка 'Оформить заказ'
+    private By makeOrderButton = By.xpath("//button[contains(text(), 'Оформить заказ')]");
 
     public MainPage(WebDriver driver){
         this.driver = driver;
@@ -34,6 +34,21 @@ public class MainPage {
     @Step("Геттер для кнопки Личный кабинет")
     public By getPersonalAccountButton(){
         return personalAccountButton;
+    }
+
+    @Step("Геттер для выбранной секции 'Булочки'")
+    public By getBunSectionSelected() {
+        return bunSectionSelected;
+    }
+
+    @Step("Геттер для выбранной секции 'Соусы'")
+    public By getSauceSectionSelected() {
+        return sauceSectionSelected;
+    }
+
+    @Step("Геттер для выбранной секции 'Начинки'")
+    public By getFillingSectionSelected() {
+        return fillingSectionSelected;
     }
 
     @Step("Геттер для секции 'Булки'")
@@ -51,6 +66,10 @@ public class MainPage {
         return fillingSectionButton;
     }
 
+    @Step("Геттер для кнопки 'Оформить заказ'")
+    public By getMakeOrderButton(){
+        return makeOrderButton;
+    }
 
 
     @Step("Кликнуть по кнопке 'Войти в аккаунт' на главной странице")
@@ -76,6 +95,16 @@ public class MainPage {
     @Step("Кликнуть по секции 'Начинки'")
     public void clickFillingSectionButton(){
         driver.findElement(fillingSectionButton).click();
+    }
+
+    @Step("Кликнуть на 'Конструктор'")
+    public void clickConstructorButton(){
+        driver.findElement(constructorButton).click();
+    }
+
+    @Step("Кликнуть на логотип Stellar Burgers")
+    public void clickLogoButton(){
+        driver.findElement(logoButton).click();
     }
 
 

@@ -2,12 +2,7 @@ package pageObject;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-
-///////////////////////////////////////РЕГИСТРАЦИЯ////////////////////////////////////////////////
 
 public class RegisterPage {
 
@@ -28,11 +23,13 @@ public class RegisterPage {
     //ошибка некорректный пароль
     private By passwordError = By.xpath("//p[contains(@class, 'input__error')]");
 
-    public String getErrorMessage() {
-        return driver.findElement(passwordError).getText();
-    }
     public RegisterPage(WebDriver driver){
         this.driver = driver;
+    }
+
+    @Step("Геттер для ошибки 'Некорректный пароль'")
+    public String getErrorMessage() {
+        return driver.findElement(passwordError).getText();
     }
 
     @Step("Геттер для поля Имя в форме регистрации")
@@ -44,8 +41,6 @@ public class RegisterPage {
     public By getLoginButton(){
         return loginButton;
     }
-
-
 
     @Step("Геттер для ошибки Некорректный пароль")
     public By getPasswordErrorMessage(){

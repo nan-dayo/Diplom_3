@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.Test;
 import pageObject.*;
 import java.time.Duration;
-
 import static org.junit.Assert.*;
 
 public class ConstructorTest extends BaseTest{

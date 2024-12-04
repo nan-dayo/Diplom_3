@@ -1,11 +1,10 @@
 
+import driver.Browser;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import static io.restassured.RestAssured.given;
 
@@ -14,11 +13,15 @@ public class BaseTest {
     protected WebDriver driver;
     protected String bearerToken;
 
+    protected final String LOGIN_PAGE_URL = "https://stellarburgers.nomoreparties.site/login";
+    protected final String LOGIN_URL = "https://stellarburgers.nomoreparties.site/api/auth/login";
+
     @Before
     public void setUp() {
-        ChromeOptions options = new ChromeOptions();
-        //options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
-        driver = new ChromeDriver(options);
+//        ChromeOptions options = new ChromeOptions();
+//        //options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
+//        driver = new ChromeDriver(options);
+        driver = Browser.createWebDriver();
         driver.get("https://stellarburgers.nomoreparties.site/");
     }
 
